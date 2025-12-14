@@ -5,200 +5,528 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Quote Generator</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         
-        h1, h2 {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1, h2, h3 {
             color: #333;
+            margin-bottom: 20px;
             text-align: center;
         }
         
+        h1 {
+            color: #4a5568;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #4a5568;
+            margin-top: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Quote Display */
         #quoteDisplay {
-            background: white;
-            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
             margin: 20px 0;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            min-height: 100px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         
         .quote-text {
-            font-size: 1.2em;
+            font-size: 1.8em;
             font-style: italic;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         
         .quote-category {
             display: inline-block;
-            background: #007bff;
+            background: rgba(255,255,255,0.2);
             color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
+            padding: 8px 20px;
+            border-radius: 25px;
             font-size: 0.9em;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
         }
         
-        .controls {
-            background: white;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        input, select, button {
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        
+        /* Buttons */
         button {
-            background: #007bff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s;
+            font-size: 1em;
+            font-weight: 600;
+            margin: 8px 5px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
         button:hover {
-            background: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
         }
         
-        .section {
-            margin: 30px 0;
+        button:active {
+            transform: translateY(-1px);
         }
         
-        .filter-section, .storage-section, .sync-section {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        button.danger {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+        }
+        
+        button.success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+        
+        button.info {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        }
+        
+        /* Inputs */
+        input, select {
+            padding: 12px 15px;
+            margin: 8px 5px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+            width: 300px;
+            max-width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        
+        /* Form Groups */
+        .form-group {
             margin: 20px 0;
         }
         
-        .notification {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            display: none;
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 600;
         }
         
-        .notification.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        /* Control Groups */
+        .control-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+            justify-content: center;
         }
         
-        .notification.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .notification.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-        
+        /* Quote List */
         .quote-list {
-            max-height: 300px;
+            max-height: 400px;
             overflow-y: auto;
             margin: 20px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
         }
         
         .quote-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .quote-item:hover {
+            background: #f7fafc;
+            transform: translateX(5px);
         }
         
         .quote-item:last-child {
             border-bottom: none;
         }
+        
+        .quote-item-content {
+            flex: 1;
+        }
+        
+        .quote-item-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            color: #2d3748;
+        }
+        
+        .quote-item-category {
+            display: inline-block;
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+        }
+        
+        /* Notifications */
+        .notification {
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            display: none;
+            animation: slideIn 0.3s ease;
+            border-left: 5px solid;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .notification.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left-color: #48bb78;
+        }
+        
+        .notification.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left-color: #f56565;
+        }
+        
+        .notification.info {
+            background: #bee3f8;
+            color: #2a4365;
+            border-left-color: #4299e1;
+        }
+        
+        .notification.warning {
+            background: #feebc8;
+            color: #744210;
+            border-left-color: #ed8936;
+        }
+        
+        /* Sync Section */
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #edf2f7;
+            border-radius: 10px;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-online {
+            background: #48bb78;
+            box-shadow: 0 0 10px #48bb78;
+        }
+        
+        .status-offline {
+            background: #e53e3e;
+        }
+        
+        .status-syncing {
+            background: #ed8936;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            input, select {
+                width: 100%;
+                margin: 8px 0;
+            }
+            
+            .control-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+        
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .badge-primary {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+        
+        .badge-success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .badge-danger {
+            background: #fed7d7;
+            color: #742a2a;
+        }
     </style>
 </head>
 <body>
-    <h1>Dynamic Quote Generator</h1>
-    
-    <div id="quoteDisplay">
-        <p class="quote-text">Click "Show New Quote" to begin!</p>
-        <span class="quote-category">Welcome</span>
-    </div>
-    
-    <div class="controls">
-        <button id="newQuote">Show New Quote</button>
-        <button id="showAllQuotes">Show All Quotes</button>
-    </div>
-    
-    <div class="filter-section">
-        <h2>Filter Quotes</h2>
-        <select id="categoryFilter">
-            <option value="all">All Categories</option>
-            <!-- Categories will be populated dynamically -->
-        </select>
-        <button onclick="filterQuotes()">Filter Quotes</button>
-    </div>
-    
-    <div class="section">
-        <h2>Add New Quote</h2>
-        <div class="controls">
-            <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-            <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
-            <button onclick="addQuote()">Add Quote</button>
-        </div>
-    </div>
-    
-    <div class="storage-section">
-        <h2>Data Management</h2>
-        <div>
-            <button onclick="exportToJson()">Export Quotes to JSON</button>
-            <button onclick="clearAllQuotes()">Clear All Quotes</button>
-            <button onclick="resetToDefault()">Reset to Default Quotes</button>
+    <div class="container">
+        <h1>🌟 Dynamic Quote Generator</h1>
+        
+        <!-- Current Quote Display -->
+        <div class="section">
+            <h2>Current Quote</h2>
+            <div id="quoteDisplay">
+                <p class="quote-text">"Click 'Show New Quote' to get started!"</p>
+                <span class="quote-category">Welcome</span>
+            </div>
+            <div class="control-group">
+                <button id="newQuote">
+                    <span>🎲</span> Show Random Quote
+                </button>
+                <button id="showAllQuotes">
+                    <span>📋</span> Show All Quotes
+                </button>
+            </div>
         </div>
         
-        <div>
-            <h3>Import Quotes</h3>
-            <input type="file" id="importFile" accept=".json" />
-            <button onclick="importFromJson()">Import Quotes</button>
+        <!-- TASK 0: Add Quote Form -->
+        <div class="section">
+            <h2>Add New Quote <span class="badge badge-primary">Task 0</span></h2>
+            <div class="form-group">
+                <label for="newQuoteText">Quote Text:</label>
+                <input id="newQuoteText" type="text" placeholder="Enter an inspiring quote..." />
+            </div>
+            <div class="form-group">
+                <label for="newQuoteCategory">Category:</label>
+                <input id="newQuoteCategory" type="text" placeholder="Enter category (e.g., Motivation)" />
+            </div>
+            <div class="control-group">
+                <button onclick="addQuote()" class="success">
+                    <span>➕</span> Add Quote
+                </button>
+            </div>
         </div>
         
-        <div>
-            <h3>Session Storage</h3>
-            <button onclick="saveSessionPreference()">Save Current View to Session</button>
-            <button onclick="loadSessionPreference()">Load Session Preference</button>
+        <!-- TASK 2: Filter Quotes -->
+        <div class="section">
+            <h2>Filter Quotes <span class="badge badge-success">Task 2</span></h2>
+            <div class="form-group">
+                <label for="categoryFilter">Filter by Category:</label>
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <button onclick="filterQuotes()">
+                    <span>🔍</span> Apply Filter
+                </button>
+                <button onclick="clearFilter()">
+                    <span>🗑️</span> Clear Filter
+                </button>
+            </div>
         </div>
-    </div>
-    
-    <div class="sync-section">
-        <h2>Server Sync</h2>
-        <div id="syncNotification" class="notification"></div>
-        <div>
-            <button onclick="syncWithServer()">Sync with Server</button>
-            <button onclick="toggleAutoSync()">Toggle Auto Sync (Every 30s)</button>
-            <span id="autoSyncStatus">Auto Sync: Off</span>
+        
+        <!-- TASK 1: Web Storage & JSON -->
+        <div class="section">
+            <h2>Data Management <span class="badge badge-info">Task 1</span></h2>
+            
+            <div class="form-group">
+                <h3>Local Storage</h3>
+                <div class="control-group">
+                    <button onclick="saveQuotesToLocalStorage()">
+                        <span>💾</span> Save to Local Storage
+                    </button>
+                    <button onclick="loadQuotesFromLocalStorage()">
+                        <span>📂</span> Load from Local Storage
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <h3>JSON Import/Export</h3>
+                <div class="control-group">
+                    <button id="exportBtn">
+                        <span>📤</span> Export to JSON
+                    </button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" />
+                    <button onclick="document.getElementById('importFile').click()">
+                        <span>📥</span> Import from JSON
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <h3>Session Storage</h3>
+                <div class="control-group">
+                    <button onclick="saveSessionPreference()">
+                        <span>💿</span> Save Session Data
+                    </button>
+                    <button onclick="loadSessionPreference()">
+                        <span>📀</span> Load Session Data
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <h3>Data Management</h3>
+                <div class="control-group">
+                    <button onclick="clearAllQuotes()" class="danger">
+                        <span>🗑️</span> Clear All Quotes
+                    </button>
+                    <button onclick="resetToDefault()">
+                        <span>🔄</span> Reset to Default
+                    </button>
+                </div>
+            </div>
         </div>
-        <div>
-            <h3>Manual Conflict Resolution</h3>
-            <button onclick="resolveConflicts()">Resolve Conflicts (Server Wins)</button>
-            <button onclick="showConflictResolution()">Show Conflicts</button>
+        
+        <!-- TASK 3: Server Sync -->
+        <div class="section">
+            <h2>Server Sync & Conflict Resolution <span class="badge badge-danger">Task 3</span></h2>
+            
+            <div class="sync-status">
+                <div class="status-indicator status-offline" id="syncStatus"></div>
+                <span>Last Sync: <span id="lastSyncTime">Never</span></span>
+            </div>
+            
+            <!-- Sync Notifications -->
+            <div id="syncNotification" class="notification"></div>
+            <div id="conflictNotification" class="notification warning" style="display: none;"></div>
+            
+            <div class="form-group">
+                <h3>Server Communication</h3>
+                <div class="control-group">
+                    <button id="syncBtn">
+                        <span>🔄</span> Sync Now
+                    </button>
+                    <button onclick="fetchQuotesFromServer()">
+                        <span>📡</span> Fetch from Server
+                    </button>
+                    <button onclick="postQuotesToServer()">
+                        <span>📨</span> Post to Server
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <h3>Auto Sync</h3>
+                <div class="control-group">
+                    <button id="autoSyncBtn">
+                        <span>⏰</span> Start Auto Sync (30s)
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <h3>Conflict Resolution</h3>
+                <div class="control-group">
+                    <button id="resolveBtn">
+                        <span>🤝</span> Resolve Conflicts
+                    </button>
+                    <button onclick="showConflictDetails()">
+                        <span>📊</span> View Conflicts
+                    </button>
+                </div>
+            </div>
         </div>
+        
+        <!-- Quotes List (Hidden by default) -->
+        <div class="section" id="quotesListSection" style="display: none;">
+            <h2>All Quotes <span id="quoteCount" class="badge badge-primary">0</span></h2>
+            <div class="quote-list" id="allQuotesList"></div>
+        </div>
+        
+        <!-- Notifications Area -->
+        <div id="notification" class="notification"></div>
     </div>
-    
-    <div class="quote-list" id="allQuotesList">
-        <!-- All quotes will be displayed here -->
-    </div>
-    
-    <div id="notification" class="notification"></div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>

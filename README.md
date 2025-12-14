@@ -1,36 +1,32 @@
 # Dynamic Quote Generator
 
-A web application for managing quotes with advanced DOM manipulation, web storage, and JSON handling capabilities.
+A comprehensive web application demonstrating DOM manipulation, web storage, JSON handling, filtering, and server synchronization.
 
 ## Features
 
-### Task 0: Dynamic Content Generator
-- Generate random quotes from a collection
-- Add new quotes dynamically through a form
-- Delete existing quotes
-- Display all quotes in a list view
+### ✅ Task 0: Dynamic Content Generator
+- **Random Quote Display**: Shows random quotes from the collection
+- **Add New Quotes**: Form to add quotes with categories
+- **View All Quotes**: Display all quotes in a list with delete functionality
+- **Responsive Design**: Modern UI with smooth animations
 
-### Task 1: Web Storage and JSON Handling
+### ✅ Task 1: Web Storage & JSON Handling
 - **Local Storage**: Persist quotes across browser sessions
-- **Session Storage**: Store temporary user preferences
-- **JSON Export/Import**: Export quotes to JSON file and import from JSON
+- **Session Storage**: Store user preferences temporarily
+- **JSON Import/Export**: Import quotes from JSON files and export to JSON
 - **Data Management**: Clear all quotes or reset to defaults
 
-### Task 2: Dynamic Content Filtering
-- Filter quotes by category using dropdown
-- Categories are dynamically populated from quotes
-- Last selected filter is remembered across sessions
-- Real-time filtering updates
+### ✅ Task 2: Dynamic Filtering System
+- **Category Filtering**: Filter quotes by category using dropdown
+- **Dynamic Categories**: Categories automatically update when quotes are added
+- **Persistent Filters**: Remember last selected filter across sessions
+- **Real-time Updates**: Immediate filter application
 
-### Task 3: Server Sync and Conflict Resolution
-- Simulated server synchronization
-- Auto-sync capability (every 30 seconds)
-- Conflict detection and resolution
-- Manual conflict resolution interface
+### ✅ Task 3: Server Sync & Conflict Resolution
+- **Server Communication**: Fetch from and post to mock API (JSONPlaceholder)
+- **Auto Sync**: Automatic synchronization every 30 seconds
+- **Conflict Detection**: Detect when local and server data differ
+- **Conflict Resolution**: Manual resolution with server preference
+- **Notifications**: Visual feedback for sync status and conflicts
 
-## Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/alx_fe_javascript.git
-cd alx_fe_javascript/dom-manipulation
+## Project Structure
