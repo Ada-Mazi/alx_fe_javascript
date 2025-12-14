@@ -49,24 +49,26 @@
     
     <div>
         <h2>Filter Quotes</h2>
-        <select id="categoryFilter" onchange="filterQuotes()">
+        <select id="categoryFilter">
             <option value="all">All Categories</option>
         </select>
+        <button onclick="filterQuote()">Filter Quotes</button>
     </div>
     
     <div>
         <h2>Data Management</h2>
         <button onclick="exportToJsonFile()">Export Quotes to JSON</button>
-        <input type="file" id="importFile" accept=".json" />
-        <button onclick="document.getElementById('importFile').click()">Import Quotes from JSON</button>
+        <!-- Task 1: Import quotes file input with onchange handler -->
+        <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
     </div>
     
     <div>
         <h2>Server Sync</h2>
         <div id="syncNotification" class="notification"></div>
         <button onclick="syncQuotes()">Sync with Server</button>
-        <button id="autoSyncBtn">Start Auto Sync (30s)</button>
+        <button onclick="toggleAutoSync()">Start Auto Sync (30s)</button>
         <button onclick="resolveConflicts()">Resolve Conflicts</button>
+        <div id="conflictNotification" style="display: none;"></div>
     </div>
     
     <div id="notification" class="notification"></div>
