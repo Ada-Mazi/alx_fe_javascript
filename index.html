@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Quote Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        
+        #quoteDisplay {
+            background: white;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-height: 100px;
+        }
+        
+        .quote-text {
+            font-size: 1.2em;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .quote-category {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .controls {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        input, select, button {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        .section {
+            margin: 30px 0;
+        }
+        
+        .filter-section, .storage-section, .sync-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        
+        .notification {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .notification.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .notification.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .notification.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .quote-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .quote-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .quote-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dynamic Quote Generator</h1>
+    
+    <div id="quoteDisplay">
+        <p class="quote-text">Click "Show New Quote" to begin!</p>
+        <span class="quote-category">Welcome</span>
+    </div>
+    
+    <div class="controls">
+        <button id="newQuote">Show New Quote</button>
+        <button id="showAllQuotes">Show All Quotes</button>
+    </div>
+    
+    <div class="filter-section">
+        <h2>Filter Quotes</h2>
+        <select id="categoryFilter">
+            <option value="all">All Categories</option>
+            <!-- Categories will be populated dynamically -->
+        </select>
+        <button onclick="filterQuotes()">Filter Quotes</button>
+    </div>
+    
+    <div class="section">
+        <h2>Add New Quote</h2>
+        <div class="controls">
+            <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+            <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+            <button onclick="addQuote()">Add Quote</button>
+        </div>
+    </div>
+    
+    <div class="storage-section">
+        <h2>Data Management</h2>
+        <div>
+            <button onclick="exportToJson()">Export Quotes to JSON</button>
+            <button onclick="clearAllQuotes()">Clear All Quotes</button>
+            <button onclick="resetToDefault()">Reset to Default Quotes</button>
+        </div>
+        
+        <div>
+            <h3>Import Quotes</h3>
+            <input type="file" id="importFile" accept=".json" />
+            <button onclick="importFromJson()">Import Quotes</button>
+        </div>
+        
+        <div>
+            <h3>Session Storage</h3>
+            <button onclick="saveSessionPreference()">Save Current View to Session</button>
+            <button onclick="loadSessionPreference()">Load Session Preference</button>
+        </div>
+    </div>
+    
+    <div class="sync-section">
+        <h2>Server Sync</h2>
+        <div id="syncNotification" class="notification"></div>
+        <div>
+            <button onclick="syncWithServer()">Sync with Server</button>
+            <button onclick="toggleAutoSync()">Toggle Auto Sync (Every 30s)</button>
+            <span id="autoSyncStatus">Auto Sync: Off</span>
+        </div>
+        <div>
+            <h3>Manual Conflict Resolution</h3>
+            <button onclick="resolveConflicts()">Resolve Conflicts (Server Wins)</button>
+            <button onclick="showConflictResolution()">Show Conflicts</button>
+        </div>
+    </div>
+    
+    <div class="quote-list" id="allQuotesList">
+        <!-- All quotes will be displayed here -->
+    </div>
+    
+    <div id="notification" class="notification"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
