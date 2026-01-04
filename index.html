@@ -11,67 +11,68 @@
             margin: 0 auto;
             padding: 20px;
         }
-        
-        #quoteDisplay {
+        .quote-container {
+            border: 1px solid #ddd;
             padding: 20px;
             margin: 20px 0;
-            border: 1px solid #ccc;
-            min-height: 100px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
         }
-        
-        button, input, select {
-            padding: 10px;
+        .controls {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        input, select, button {
             margin: 5px;
+            padding: 8px;
         }
-        
-        .notification {
-            padding: 10px;
-            margin: 10px 0;
-            display: none;
+        button {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
     <h1>Dynamic Quote Generator</h1>
     
-    <div id="quoteDisplay">
-        <p>Click "Show New Quote" to begin!</p>
+    <div class="controls">
+        <h3>Category Filter</h3>
+        <select id="categoryFilter">
+            <option value="all">All Categories</option>
+        </select>
+        <button id="newQuote">Show Random Quote</button>
     </div>
     
-    <button id="newQuote">Show New Quote</button>
+    <div id="quoteDisplay" class="quote-container">
+        <!-- Quotes will appear here -->
+    </div>
     
-    <div>
-        <h2>Add New Quote</h2>
+    <div class="controls">
+        <h3>Add New Quote</h3>
         <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
         <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
         <button onclick="addQuote()">Add Quote</button>
     </div>
     
-    <div>
-        <h2>Filter Quotes</h2>
-        <select id="categoryFilter">
-            <option value="all">All Categories</option>
-        </select>
-        <button onclick="filterQuote()">Filter Quotes</button>
+    <div class="controls">
+        <h3>Import/Export Quotes</h3>
+        <button onclick="exportToJson()">Export Quotes to JSON</button>
+        <br><br>
+        <input type="file" id="importFile" accept=".json" />
+        <button onclick="importFromJson()">Import Quotes</button>
     </div>
     
-    <div>
-        <h2>Data Management</h2>
-        <button onclick="exportToJsonFile()">Export Quotes to JSON</button>
-        <!-- Task 1: Import quotes file input with onchange handler -->
-        <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+    <div id="notification" style="display:none; padding:10px; margin:10px 0; background-color:#e7f3fe; border-left:6px solid #2196F3;">
+        <!-- Notifications appear here -->
     </div>
-    
-    <div>
-        <h2>Server Sync</h2>
-        <div id="syncNotification" class="notification"></div>
-        <button onclick="syncQuotes()">Sync with Server</button>
-        <button onclick="toggleAutoSync()">Start Auto Sync (30s)</button>
-        <button onclick="resolveConflicts()">Resolve Conflicts</button>
-        <div id="conflictNotification" style="display: none;"></div>
-    </div>
-    
-    <div id="notification" class="notification"></div>
     
     <script src="script.js"></script>
 </body>
